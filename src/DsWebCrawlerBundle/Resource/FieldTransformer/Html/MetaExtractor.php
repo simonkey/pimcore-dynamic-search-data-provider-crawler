@@ -18,7 +18,7 @@ class MetaExtractor implements FieldTransformerInterface
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setRequired('name');
         $resolver->setAllowedTypes('name', ['string']);
@@ -27,7 +27,7 @@ class MetaExtractor implements FieldTransformerInterface
     /**
      * {@inheritdoc}
      */
-    public function setOptions(array $options)
+    public function setOptions(array $options): void
     {
         $this->options = $options;
     }

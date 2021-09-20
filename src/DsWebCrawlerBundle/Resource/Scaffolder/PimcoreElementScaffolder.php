@@ -18,7 +18,7 @@ class PimcoreElementScaffolder implements ResourceScaffolderInterface
     /**
      * {@inheritdoc}
      */
-    public function isBaseResource($resource)
+    public function isBaseResource($resource): bool
     {
         return false;
     }

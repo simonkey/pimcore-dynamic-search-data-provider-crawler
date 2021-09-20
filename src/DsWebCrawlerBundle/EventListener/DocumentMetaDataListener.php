@@ -5,8 +5,8 @@ namespace DsWebCrawlerBundle\EventListener;
 use DsWebCrawlerBundle\Service\CrawlerStateServiceInterface;
 use Pimcore\Http\Request\Resolver\DocumentResolver;
 use Pimcore\Model\Document\Page;
-use Pimcore\Templating\Helper\HeadMeta;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Pimcore\Twig\Extension\Templating\HeadMeta;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 
 class DocumentMetaDataListener
 {
@@ -40,16 +40,13 @@ class DocumentMetaDataListener
         $this->headMeta = $headMeta;
     }
 
-    /**
-     * @param GetResponseEvent $event
-     */
-    public function onKernelRequest(GetResponseEvent $event)
+    public function onKernelRequest(RequestEvent $event)
     {
         if (!$this->crawlerState->isDsWebCrawlerCrawler()) {
             return;
         }
 
-        if (!$event->isMasterRequest()) {
+        if (!$event->isMainRequest()) {
             return;
         }
 

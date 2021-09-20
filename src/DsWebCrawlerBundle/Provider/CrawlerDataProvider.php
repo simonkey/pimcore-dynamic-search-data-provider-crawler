@@ -9,6 +9,7 @@ use DynamicSearchBundle\Context\ContextDefinitionInterface;
 use DynamicSearchBundle\Exception\ProviderException;
 use DynamicSearchBundle\Normalizer\Resource\ResourceMetaInterface;
 use DynamicSearchBundle\Provider\DataProviderInterface;
+use DynamicSearchBundle\Resource\Proxy\ProxyResourceInterface;
 use Pimcore\Model\Asset;
 use Pimcore\Model\DataObject;
 use Pimcore\Model\Document;
@@ -44,7 +45,7 @@ class CrawlerDataProvider implements DataProviderInterface
     /**
      * {@inheritdoc}
      */
-    public static function configureOptions(OptionsResolver $resolver)
+    public static function configureOptions(OptionsResolver $resolver): void
     {
         $options = [
             'always'                                 => function (OptionsResolver $spoolResolver) {
@@ -105,7 +106,7 @@ class CrawlerDataProvider implements DataProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function setOptions(array $options)
+    public function setOptions(array $options): void
     {
         $this->configuration = $options;
     }
@@ -113,7 +114,7 @@ class CrawlerDataProvider implements DataProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function warmUp(ContextDefinitionInterface $contextDefinition)
+    public function warmUp(ContextDefinitionInterface $contextDefinition): void
     {
         $this->fileWatcherService->resetPersistenceStore();
     }
@@ -121,16 +122,7 @@ class CrawlerDataProvider implements DataProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function coolDown(ContextDefinitionInterface $contextDefinition)
-    {
-        $this->fileWatcherService->resetPersistenceStore();
-        $this->fileWatcherService->resetUriFilterPersistenceStore();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function cancelledShutdown(ContextDefinitionInterface $contextDefinition)
+    public function coolDown(ContextDefinitionInterface $contextDefinition): void
     {
         $this->fileWatcherService->resetPersistenceStore();
         $this->fileWatcherService->resetUriFilterPersistenceStore();
@@ -139,7 +131,7 @@ class CrawlerDataProvider implements DataProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function emergencyShutdown(ContextDefinitionInterface $contextDefinition)
+    public function cancelledShutdown(ContextDefinitionInterface $contextDefinition): void
     {
         $this->fileWatcherService->resetPersistenceStore();
         $this->fileWatcherService->resetUriFilterPersistenceStore();
@@ -148,7 +140,16 @@ class CrawlerDataProvider implements DataProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function checkUntrustedResourceProxy(ContextDefinitionInterface $contextDefinition, $resource)
+    public function emergencyShutdown(ContextDefinitionInterface $contextDefinition): void
+    {
+        $this->fileWatcherService->resetPersistenceStore();
+        $this->fileWatcherService->resetUriFilterPersistenceStore();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function checkUntrustedResourceProxy(ContextDefinitionInterface $contextDefinition, $resource): ?ProxyResourceInterface
     {
         // not required / implemented in crawler provider!
 
@@ -158,7 +159,7 @@ class CrawlerDataProvider implements DataProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function validateUntrustedResource(ContextDefinitionInterface $contextDefinition, $resource)
+    public function validateUntrustedResource(ContextDefinitionInterface $contextDefinition, $resource): bool
     {
         if ($resource instanceof Asset\Document) {
             return true;
@@ -174,7 +175,7 @@ class CrawlerDataProvider implements DataProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function provideAll(ContextDefinitionInterface $contextDefinition)
+    public function provideAll(ContextDefinitionInterface $contextDefinition): void
     {
         $this->crawlerService->initFullCrawl($contextDefinition->getName(), $contextDefinition->getContextDispatchType(), $this->configuration);
         $this->crawlerService->process();
@@ -183,7 +184,7 @@ class CrawlerDataProvider implements DataProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function provideSingle(ContextDefinitionInterface $contextDefinition, ResourceMetaInterface $resourceMeta)
+    public function provideSingle(ContextDefinitionInterface $contextDefinition, ResourceMetaInterface $resourceMeta): void
     {
         $options = $resourceMeta->getResourceOptions();
 

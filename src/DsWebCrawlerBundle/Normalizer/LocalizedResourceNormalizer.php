@@ -10,6 +10,7 @@ use DynamicSearchBundle\Resource\Container\ResourceContainerInterface;
 use Pimcore\Model\Asset;
 use Pimcore\Model\DataObject;
 use Pimcore\Model\Document;
+use Pimcore\Tool;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use VDB\Spider\Resource as SpiderResource;
@@ -24,19 +25,19 @@ class LocalizedResourceNormalizer extends AbstractResourceNormalizer
     /**
      * {@inheritdoc}
      */
-    public static function configureOptions(OptionsResolver $resolver)
+    public static function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setRequired(['locales', 'skip_not_localized_documents']);
         $resolver->setAllowedTypes('locales', ['string[]']);
         $resolver->setAllowedTypes('skip_not_localized_documents', ['bool']);
         $resolver->setDefaults(['skip_not_localized_documents' => true]);
-        $resolver->setDefaults(['locales' => \Pimcore\Tool::getValidLanguages()]);
+        $resolver->setDefaults(['locales' => []]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setOptions(array $options)
+    public function setOptions(array $options): void
     {
         $this->options = $options;
     }
@@ -97,8 +98,9 @@ class LocalizedResourceNormalizer extends AbstractResourceNormalizer
 
         /** @var DataObject\ClassDefinition\LinkGeneratorInterface $linkGenerator */
         $linkGenerator = $object->getClass()->getLinkGenerator();
+        $locales = $this->getLocales();
         if ($linkGenerator instanceof DataObject\ClassDefinition\LinkGeneratorInterface) {
-            foreach ($this->options['locales'] as $locale) {
+            foreach ($locales as $locale) {
                 $documentId = sprintf('%s_%s_%d', 'object', $locale, $object->getId());
                 $path = $linkGenerator->generate($object, ['_locale' => $locale]);
                 $resourceMeta = new ResourceMeta(
@@ -206,5 +208,10 @@ class LocalizedResourceNormalizer extends AbstractResourceNormalizer
         $documentId = sprintf('asset_%d', $value);
 
         return new ResourceMeta($documentId, $resourceId, $resourceCollectionType, $resourceType, null);
+    }
+
+    private function getLocales(): array
+    {
+        return $this->options['locales'] ?: Tool::getValidLanguages();
     }
 }

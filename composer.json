@@ -27,10 +27,9 @@
         ]
     },
     "require": {
-        "symfony/symfony": "^4|^5",
-        "pimcore/pimcore": "^6.6",
+        "pimcore/pimcore": "^10.0",
         "vdb/php-spider": "^0.5",
-        "dachcom-digital/dynamic-search": "^1.0"
+        "dachcom-digital/dynamic-search": "dev-pimcore-x"
     },
     "require-dev": {
         "codeception/codeception": "~2.4.0",

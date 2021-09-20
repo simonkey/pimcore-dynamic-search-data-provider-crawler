@@ -32,7 +32,7 @@ class HttpResponseHtmlDataScaffolder implements ResourceScaffolderInterface
     /**
      * {@inheritdoc}
      */
-    public function isBaseResource($resource)
+    public function isBaseResource($resource): bool
     {
         return true;
     }
