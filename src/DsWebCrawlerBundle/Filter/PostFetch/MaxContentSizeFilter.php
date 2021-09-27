@@ -25,12 +25,12 @@ class MaxContentSizeFilter implements PostFetchFilterInterface
      *
      * @return bool
      */
-    public function match(SpiderResource $resource)
+    public function match(SpiderResource $resource): bool
     {
         $size = $resource->getResponse()->getBody()->getSize();
         $sizeMb = $size / 1024 / 1024;
 
-        if ($this->maxFileSize == 0 || $sizeMb <= $this->maxFileSize) {
+        if ($this->maxFileSize === 0 || $sizeMb <= $this->maxFileSize) {
             return false;
         }
 

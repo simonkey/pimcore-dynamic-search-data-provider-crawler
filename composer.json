@@ -28,7 +28,7 @@
     },
     "require": {
         "pimcore/pimcore": "^10.0",
-        "vdb/php-spider": "^0.5",
+        "vdb/php-spider": "^0.6",
         "dachcom-digital/dynamic-search": "dev-pimcore-x"
     },
     "require-dev": {

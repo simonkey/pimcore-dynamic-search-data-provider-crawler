@@ -15,6 +15,7 @@ use DsWebCrawlerBundle\Event\CrawlerRequestHeaderEvent;
 use DsWebCrawlerBundle\Filter\Discovery;
 use DsWebCrawlerBundle\Filter\PostFetch;
 use DsWebCrawlerBundle\PersistenceHandler;
+use DsWebCrawlerBundle\Spider\Discoverer\XPathExpressionDiscoverer;
 use GuzzleHttp\HandlerStack;
 use Psr\Http\Message\RequestInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -24,7 +25,6 @@ use VDB\Spider\QueueManager\InMemoryQueueManager;
 use VDB\Spider\RequestHandler\GuzzleRequestHandler;
 use VDB\Spider\Spider;
 use VDB\Spider\Filter;
-use VDB\Spider\Discoverer\XPathExpressionDiscoverer;
 use GuzzleHttp\Middleware;
 
 class CrawlerService implements CrawlerServiceInterface

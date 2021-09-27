@@ -25,7 +25,7 @@ class MimeTypeFilter implements PostFetchFilterInterface
      *
      * @return bool
      */
-    public function match(SpiderResource $resource)
+    public function match(SpiderResource $resource): bool
     {
         $hasContentType = count(
             array_intersect(

@@ -9,7 +9,7 @@ use VDB\Spider\PersistenceHandler\PersistenceHandlerInterface;
 use VDB\Spider\PersistenceHandler\FilePersistenceHandler;
 use VDB\Spider\Resource as SpiderResource;
 
-class FileSerializedResourcePersistenceHandler extends FilePersistenceHandler implements PersistenceHandlerInterface
+class FileSerializedResourcePersistenceHandler extends FilePersistenceHandler
 {
     /**
      * @var Downloader
@@ -33,7 +33,7 @@ class FileSerializedResourcePersistenceHandler extends FilePersistenceHandler im
      *
      * @return string
      */
-    protected function completePath($path)
+    protected function completePath($path): string
     {
         if (substr($path, -1, 1) === '/') {
             $path .= $this->defaultFilename;
@@ -67,8 +67,8 @@ class FileSerializedResourcePersistenceHandler extends FilePersistenceHandler im
     /**
      * @return SpiderResource
      */
-    public function current()
+    public function current(): SpiderResource
     {
-        return unserialize($this->getIterator()->current()->getContents());
+        return unserialize($this->getIterator()->current()->getContents(), ['allowed_classes' => SpiderResource::class]);
     }
 }
